@@ -53,3 +53,30 @@ def postListProfile(request, id):
         'posts': post_serializer.data,
         'user': user_serializer.data
     }, safe=False)
+
+
+@api_view(['POST'])
+def post_like(request, pk):
+    post = Post.objects.get(pk=pk)
+    user = request.user
+
+    # Check if the user has already liked the post
+    existing_like = post.likes.filter(created_by=user).first()
+
+    if existing_like:
+        # If the user has already liked the post, remove the like
+        existing_like.delete()
+        post.likes_count = max(post.likes_count - 1, 0)  # Ensure likes_count doesn't go negative
+        post.save()
+        return JsonResponse({'message': 'like removed'})
+    else:
+        # If the user has not liked the post, add a like
+        like = Like.objects.create(created_by=user)
+        post.likes.add(like)
+        post.likes_count += 1
+        post.save()
+        return JsonResponse({'message': 'like added'})
+
+
+    
+    

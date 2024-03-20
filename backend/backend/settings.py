@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'usermodel',
     'post',
+    'search',
 ]
 
 REST_FRAMEWORK = {
