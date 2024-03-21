@@ -57,7 +57,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
                                     </svg> 
 
-                                    <span class="text-gray-500 text-xs">3 comments</span>
+                                    <RouterLink :to="{name: 'postview', params: {id: post.id}}" class="text-gray-500 text-xs">{{ post.comments_count }} comments</RouterLink>
                                 </div>
                             </div>
                             
@@ -69,105 +69,7 @@
                         </div>  
                     </div>
                 </div>
-
-                <!-- <div class="main-right col-span-1 space-y-4">
-                    <div class="p-4 bg-white border border-gray-200 rounded-lg">
-                        <h3 class="mb-6 text-xl">People you may know</h3>
-
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <img src="https://i.pravatar.cc/300?img=70" class="w-[40px] rounded-full">
-                                    
-                                    <p class="text-xs"><strong>Code With Stein</strong></p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Show</a>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <img src="https://i.pravatar.cc/300?img=70" class="w-[40px] rounded-full">
-                                    
-                                    <p class="text-xs"><strong>Code With Stein</strong></p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Show</a>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <img src="https://i.pravatar.cc/300?img=70" class="w-[40px] rounded-full">
-                                    
-                                    <p class="text-xs"><strong>Code With Stein</strong></p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Show</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-4 bg-white border border-gray-200 rounded-lg">
-                        <h3 class="mb-6 text-xl">Trends</h3>
-
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <p class="text-xs">
-                                        <strong>#codewithstein</strong><br>
-                                        <span class="text-gray-500">180 posts</span>
-                                    </p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Explore</a>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <p class="text-xs">
-                                        <strong>#codewithstein</strong><br>
-                                        <span class="text-gray-500">180 posts</span>
-                                    </p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Explore</a>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <p class="text-xs">
-                                        <strong>#codewithstein</strong><br>
-                                        <span class="text-gray-500">180 posts</span>
-                                    </p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Explore</a>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <p class="text-xs">
-                                        <strong>#codewithstein</strong><br>
-                                        <span class="text-gray-500">180 posts</span>
-                                    </p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Explore</a>
-                            </div>
-
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <p class="text-xs">
-                                        <strong>#codewithstein</strong><br>
-                                        <span class="text-gray-500">180 posts</span>
-                                    </p>
-                                </div>
-
-                                <a href="#" class="py-2 px-3 bg-purple-600 text-white text-xs rounded-lg">Explore</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+                
             </div>
         </main>
     </body>

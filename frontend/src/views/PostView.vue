@@ -2,53 +2,18 @@
     <body> 
         <main class="px-8 py-6 bg-gray-100">
             <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
+
                 <div class="main-center col-span-4 space-y-4">
-                    <!-- searchbar -->
-                    <div class="bg-white border border-gray-200 rounded-lg">
-                        <form v-on:submit.prevent="submitForm" class="p-4 flex space-x-4">  
-                            <input v-model="query" type="search" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What are you looking for?">
-
-                            <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                                </svg>      
-                            </button>
-                        </form>
-                    
-                    </div>
-
-
-
-
-                    <div class="p-4 bg-white border border-gray-200 rounded-lg grid grid-cols-4 gap-4"
-                    v-if="users.length"
-                    >
-                        <div class="p-4 text-center bg-gray-100 rounded-lg"
-                        v-for="user in users"
-                        v-bind:key="user.id"
-                        >
-                            <img src="https://i.pravatar.cc/300?img=70" class="mb-6 rounded-full">
-                        
-                            <p><strong><RouterLink :to="{name: 'profile', params:{'id': user.id}}">{{user.name}}</RouterLink></strong></p>
-
-                            <div class="mt-6 flex space-x-8 justify-around">
-                                <p class="text-xs text-gray-500">182 friends</p>
-                                <p class="text-xs text-gray-500">120 posts</p>
-                            </div>
-                        </div>
-
-                    </div>
 
                     <div 
                     class="p-4 bg-white border border-gray-200 rounded-lg"
-                    v-for="post in posts"
-                    v-bind:key="post.id"
+                    v-if="post.id"
                     >
                         <div class="mb-6 flex items-center justify-between">
                             <div class="flex items-center space-x-6">
                                 <img src="https://i.pravatar.cc/300?img=70" class="w-[40px] rounded-full">
                                 
-                                <p><strong><RouterLink :to="{name: 'profile', params:{'id': post.created_by.id}}">{{ post.created_by.name }}</RouterLink></strong></p>
+                                <p><strong>{{ post.created_by.name }}</strong></p>
                             </div>
 
                             <p class="text-gray-600">{{ post.created_at_formatted}}</p>
@@ -65,10 +30,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                     </svg>  
                                     
-                                    <span class="text-gray-500 text-xs" >
+                                    <span class="text-gray-500 text-xs">
                                         {{ post.likes_count }}
                                         {{ post.likes_count === 1 || post.likes_count === 0 ? 'like' : 'likes' }}
-                                    </span>                             
+                                    </span>
                                 </div> 
                                 
                                 <div class="flex items-center space-x-2">
@@ -76,7 +41,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
                                     </svg> 
 
-                                    <span class="text-gray-500 text-xs">{{ post.comments_count }} comments</span>
+                                    <RouterLink :to="{name: 'postview', params: {id: post.id}}" class="text-gray-500 text-xs">{{ post.comments_count }} comments</RouterLink>
                                 </div>
                             </div>
                             
@@ -87,48 +52,103 @@
                             </div>   
                         </div>  
                     </div>
-                </div>
 
+
+                    <div class="p-4 ml-6 border border-gray-300 rounded-lg">
+                        <div class="text-lg font-semibold mb-4">Comments</div>
+                        <div
+                            class="comment-item p-4 bg-gray-50 border border-gray-200 rounded-lg mb-4"
+                            v-for="comment in post.comments"
+                            :key="comment.id"
+                        >
+                            <CommentItem :comment="comment" />
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="bg-white border border-gray-200 rounded-lg">
+                        <form action="" method="post" v-on:submit.prevent="submitForm">
+    
+                            <div class="p-4">  
+                                <textarea v-model="body"  class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What do you think?"></textarea>
+                            </div>
+    
+                            <div class="p-4 border-t border-gray-100 flex justify-between">
+    
+                                <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg ml-auto">Comment</button>
+                            </div>
+    
+                        </form>
+                    </div>
+
+                </div>
+                
             </div>
         </main>
     </body>
 </template>
 
-
 <script>
-    import axios from 'axios'
+import axios from 'axios'
+import CommentItem from '../components/CommentItem.vue'
 
-    export default{
-        name:'SearchView',
+export default {
+    name: 'PostView',
 
-        data(){
-            return{
-                query:'',
-                users: [],
-                posts:[],
-            }
+    components:{
+        CommentItem,
+    },
+
+    data() {
+        return {
+            post: {
+                comments:[]
+            },
+            body: ''
+        }
+    },
+
+    mounted() {
+        this.getPost()
+    },
+
+    methods: {
+        getPost() {
+            axios
+                .get(`/api/posts/${this.$route.params.id}/`)
+                .then(response => {
+                    console.log('data', response.data)
+
+                    this.post = response.data.post
+                })
+                .catch(error => {
+                    console.log('error', error)
+                })
         },
 
-        methods: {
-            submitForm(){
-                console.log('submitForm', this.query)
+        submitForm() {
+            console.log('submitForm:', this.body);
 
-                axios
-                    .post('/api/search/',{
-                        query:this.query
-                    })
-                    .then(response =>{
-                        console.log('response',response.data)
+            axios
+                .post(`/api/posts/${this.$route.params.id}/comment/`, {
+                    'body':this.body
+                })
+                .then(response => {
+                    console.log('data',response.data)
 
-                        this.users = response.data.users
-                        this.posts = response.data.posts
-                    })
-                    .catch(error =>{
-                        console.log('error', error)
-                    })
-            },
-            likePost(id){
-            // console.log('likepost',id)
+                    this.post.comments.push(response.data)
+                    this.post.comments_count += 1
+                    this.body = ''
+                })
+                .catch(error =>{
+                    console.log('error',error)
+                })
+        },
+
+        likePost(id){
+            console.log('likepost',id)
             
             axios
                 .post(`/api/posts/${id}/like/`)
@@ -141,6 +161,6 @@
                     console.log('error',error)
                 });
         },
-        },
     }
+}
 </script>

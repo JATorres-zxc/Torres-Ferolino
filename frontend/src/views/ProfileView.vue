@@ -8,9 +8,12 @@
                         
                         <p><strong>{{user.name}}</strong></p>
 
-                        <div class="mt-6 flex space-x-8 justify-around">
+                        <!-- <div class="mt-6 flex space-x-8 justify-around">
                             <p class="text-xs text-gray-500">182 friends</p>
                             <p class="text-xs text-gray-500">120 posts</p>
+                        </div> -->
+                        <div class="mt-6" v-if="userStore.user.id == user.id" @click="logout">
+                            <button class="bg-red-500 text-white font-bold py-2 px-4 rounded-md">Logout</button>
                         </div>
                     </div>
                 </div>
@@ -72,7 +75,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
                                     </svg> 
 
-                                    <span class="text-gray-500 text-xs">3 comments</span>
+                                    <span class="text-gray-500 text-xs">{{ post.comments_count }} comments</span>
                                 </div>
                             </div>
                             
@@ -264,7 +267,7 @@ export default {
         deletePost(id) {
             this.posts = this.posts.filter(post => post.id !== id)
         },
-        
+
         likePost(id){
             console.log('likepost',id)
             
@@ -279,6 +282,14 @@ export default {
                     console.log('error',error)
                 });
         },
+
+        logout(){
+            console.log('logout')
+
+            this.userStore.removeToken()
+
+            this.$router.push('/login')
+        }
     }
 }
 </script>

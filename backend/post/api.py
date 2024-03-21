@@ -77,6 +77,25 @@ def post_like(request, pk):
         post.save()
         return JsonResponse({'message': 'like added'})
 
+@api_view(['GET'])
+def postDetail(request,pk):
+    post = Post.objects.get(pk=pk)
+    
+    return JsonResponse({
+        'post': PostDetailSerializer(post).data
+    })
 
+
+@api_view(['POST'])
+def createComment(request, pk):
+    comment = Comment.objects.create(body=request.data.get('body'), created_by=request.user)
+
+    post = Post.objects.get(pk=pk)
+    post.comments.add(comment)
+    post.comments_count = post.comments_count + 1
+    post.save()
+    # print(request.data)
     
+    serializer = CommentSerializer(comment)
     
+    return JsonResponse(serializer.data, safe=False)
