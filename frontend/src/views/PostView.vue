@@ -11,14 +11,20 @@
                     >
                         <div class="mb-6 flex items-center justify-between">
                             <div class="flex items-center space-x-6">
-                                <img src="https://i.pravatar.cc/300?img=70" class="w-[40px] rounded-full">
+                                <RouterLink :to="{name: 'profile', params: {id: post.created_by.id}}">
+                                    <img :src="post.created_by.get_avatar" class="w-[40px] rounded-full">
+                                </RouterLink>
                                 
-                                <p><strong>{{ post.created_by.name }}</strong></p>
+                                <p><strong><RouterLink :to="{name: 'profile', params:{'id': post.created_by.id}}">{{ post.created_by.name }}</RouterLink></strong></p>
                             </div>
 
                             <p class="text-gray-600">{{ post.created_at_formatted}}</p>
                         </div>
 
+                        <template v-if="post.attachments.length">
+                            <img v-for="image in post.attachments" v-bind:key="image.id" :src="image.get_image" class="w-full mb-4 rounded-xl">
+                        </template>
+                        
                         <p>
                             {{ post.body }}
                         </p>

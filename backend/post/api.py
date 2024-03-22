@@ -23,16 +23,31 @@ def postList(request):
 
 @api_view(['POST'])
 def createPost(request):
-    data = request.data
+    form = PostForm(request.POST)
+    attachment = None
+    attachment_form = AttachmentForm(request.POST, request.FILES)
     
-    form = PostForm(request.data)
+    print(request.FILES)
+    print(attachment_form)
 
-    
+    if attachment_form.is_valid():
+        print('imagevalid')
+        attachment = attachment_form.save(commit=False)
+        attachment.created_by = request.user
+        attachment.save()
+
     if form.is_valid():
         post = form.save(commit=False)
         post.created_by = request.user
         post.save()
-        
+
+        if attachment:
+            post.attachments.add(attachment)
+
+        user = request.user
+        user.posts_count = user.posts_count + 1
+        user.save()
+
         serializer = PostSerializer(post)
     # print(data)   
         return JsonResponse(serializer.data, safe=False)

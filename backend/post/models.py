@@ -36,6 +36,16 @@ class Comment(models.Model):
     def created_at_formatted(self):
         return timesince(self.created_at)
 
+class PostAttachment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    image = models.ImageField(upload_to='post_attachments')
+    created_by = models.ForeignKey(User, related_name='post_attachments', on_delete=models.CASCADE)
+
+    def get_image(self):
+        if self.image:
+            return settings.WEBSITE_URL + self.image.url
+        else:
+            return ''
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -53,6 +63,9 @@ class Post(models.Model):
 
     comments = models.ManyToManyField(Comment, blank=True)
     comments_count = models.IntegerField(default=0)
+    
+    posts_count = models.IntegerField(default=0)
+
 
     # reported_by_users = models.ManyToManyField(User, blank=True)
 
@@ -61,5 +74,9 @@ class Post(models.Model):
     
     def created_at_formatted(self):
         return timesince(self.created_at)
+    
+    
+
+
 
 

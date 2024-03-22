@@ -6,6 +6,10 @@ import MessagesView from '../views/MessagesView.vue'
 import SearchView from '../views/SearchView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import PostView from '../views/PostView.vue'
+import EditProfileView from '../views/EditProfileView.vue'
+import editProfileView from '../views/EditPasswrodView.vue'
+import EditPasswrodView from '../views/EditPasswrodView.vue'
+
 
 
 const router = createRouter({
@@ -45,6 +49,16 @@ const router = createRouter({
       path: '/:id',
       name: 'postview',
       component: PostView
+    },
+    {
+      path: '/profile/edit',
+      name: 'editProfileView',
+      component: EditProfileView
+    },
+    {
+      path: '/profile/edit/password',
+      name: 'editPasswordView',
+      component: EditPasswrodView
     },
   ]
 })
