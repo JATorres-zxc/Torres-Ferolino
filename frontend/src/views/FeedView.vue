@@ -12,8 +12,11 @@
                             </div>
 
                             <div class="p-4 border-t border-gray-100 flex justify-between">
-                                <a href="#" class="inline-block py-4 px-6 bg-gray-600 text-white rounded-lg">Attach image</a>
-
+                                <label class="inline-block py-4 px-6 bg-gray-600 text-white rounded-lg">
+                                    <input type="file" ref="file" @change="handleFileChange">
+                                    <span v-if="fileName" class="text-sm text-gray-300">{{ fileName }}</span>
+                                    <span v-else>Attach image</span>
+                                </label>
                                 <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Post</button>
                             </div>
 
@@ -82,6 +85,18 @@
     </body>
 </template>
 
+<style>
+    input[type='file']{
+        display: none;
+    }
+
+    .custom-file-upload{
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+</style>
 
 
 <script>
@@ -94,6 +109,7 @@ export default {
         return {
             posts: [],
             body: '',
+            fileName: null,
         }
     },
 
@@ -115,18 +131,34 @@ export default {
                 })
         },
 
+        handleFileChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.fileName = file.name;
+            } else {
+                this.fileName = null;
+            }
+        },
+
         submitForm() {
             console.log('submitForm:', this.body);
 
+            let formData = new FormData()
+            formData.append('image', this.$refs.file.files[0])
+            formData.append('body', this.body)
+
             axios
-                .post('/api/posts/create/', {
-                    'body':this.body
-                })
+                .post('/api/posts/create/', formData, {
+                    headers: {
+                            "Content-Type": "multipart/form-data",
+                        }
+                    })
                 .then(response => {
                     console.log('data',response.data)
 
                     this.posts.unshift(response.data)
                     this.body = ''
+                    // this.user.posts_count +=1
                 })
                 .catch(error =>{
                     console.log('error',error)

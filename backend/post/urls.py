@@ -9,4 +9,5 @@ urlpatterns = [
     path('<uuid:pk>/like/', post_like,name='postLike'),
     path('<uuid:pk>/', postDetail,name='postDetail'),
     path('<uuid:pk>/comment/', createComment,name='creataeComment'),
+    path('<uuid:pk>/delete/', deletePost ,name='deletepost'),
 ]

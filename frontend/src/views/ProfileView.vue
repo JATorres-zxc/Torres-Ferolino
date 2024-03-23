@@ -40,8 +40,9 @@
                             <div class="p-4 border-t border-gray-100 flex justify-between">
 
                                 <label class="inline-block py-4 px-6 bg-gray-600 text-white rounded-lg">
-                                    <input type="file" ref="file">
-                                    Attach image
+                                    <input type="file" ref="file" @change="handleFileChange">
+                                    <span v-if="fileName" class="text-sm text-gray-300">{{ fileName }}</span>
+                                    <span v-else>Attach image</span>
                                 </label>
                                 
                                 <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Post</button>
@@ -128,6 +129,7 @@ export default {
             posts: [],
             body: '',
             user:{},
+            fileName: null,
         }
     },
 
@@ -160,6 +162,14 @@ export default {
                 .catch(error => {
                     console.log('error', error)
                 })
+        },
+        handleFileChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.fileName = file.name;
+            } else {
+                this.fileName = null;
+            }
         },
 
         submitForm() {
