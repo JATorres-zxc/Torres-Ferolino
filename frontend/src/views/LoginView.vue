@@ -49,6 +49,7 @@ import axios from 'axios'
 import { useUserStore } from '@/stores/user'
 
 export default {
+    // Setup function to initialize user store
     setup() {
         const userStore = useUserStore()
 
@@ -57,51 +58,67 @@ export default {
         }
     },
 
+    // Component data
     data() {
         return {
+            // Form fields for email and password
             form: {
                 email: '',
                 password: '',
             },
+            // Array to store form validation errors
             errors: []
         }
     },
+    // Component methods
     methods: {
+        // Method to handle form submission
         async submitForm() {
+            // Clear previous errors
             this.errors = []
 
+            // Check if email is missing
             if (this.form.email === '') {
                 this.errors.push('Your e-mail is missing')
             }
 
+            // Check if password is missing
             if (this.form.password === '') {
                 this.errors.push('Your password is missing')
             }
 
+            // If no errors, proceed with form submission
             if (this.errors.length === 0) {
+                // Attempt to login
                 await axios
                     .post('/api/login/', this.form)
                     .then(response => {
+                        // Set access and refresh tokens in user store
                         this.userStore.setToken(response.data)
 
+                        // Set authorization header for future requests
                         axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
                     })
                     .catch(error => {
+                        // Log error and display error message
                         console.log('error', error)
-
                         this.errors.push('The email or password is incorrect! Or the user is not activated!')
                     })
             }
             
+            // If no errors, fetch user information
             if (this.errors.length === 0) {
                 await axios
                     .get('/api/me/')
                     .then(response => {
+                        // Set user information in user store
                         this.userStore.setUserInfo(response.data)
 
+                        // Redirect to feed page
                         this.$router.push('/feed')
                     })
                     .catch(error => {
+                        // Log error if user information fetch fails
                         console.log('error', error)
                     })
             }

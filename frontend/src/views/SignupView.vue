@@ -60,10 +60,10 @@
 
 <script>
     import axios from 'axios'
-
     import { useToastStore } from '@/stores/toast'
 
     export default {
+        // Setup function to initialize toast store
         setup() {
             const toastStore = useToastStore()
 
@@ -72,22 +72,28 @@
             }
         },
 
+        // Component data
         data() {
             return {
+                // Form fields
                 form: {
                     email: '',
                     name: '',
                     password1: '',
                     password2: ''
                 },
+                // Array to store validation errors
                 errors: [],
             }
         },
 
+        // Component methods
         methods: {
+            // Method to submit signup form
             submitForm() {
                 this.errors = []
 
+                // Validate form fields
                 if (this.form.email === '') {
                     this.errors.push('Your e-mail is missing')
                 }
@@ -104,18 +110,22 @@
                     this.errors.push('The password does not match')
                 }
 
+                // Submit form data if no errors
                 if (this.errors.length === 0) {
                     axios
                         .post('/api/signup/', this.form)
                         .then(response => {
                             if (response.data.message === 'success') {
+                                // Show success toast if signup is successful
                                 this.toastStore.showToast(5000, 'The user is registered. Please activate your account by clicking your email link.', 'bg-emerald-500')
 
+                                // Clear form fields
                                 this.form.email = ''
                                 this.form.name = ''
                                 this.form.password1 = ''
                                 this.form.password2 = ''
                             } else {
+                                // Show error toast if something went wrong during signup
                                 this.toastStore.showToast(5000, 'Something went wrong. Please try again', 'bg-red-300')
                             }
                         })

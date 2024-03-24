@@ -1,6 +1,7 @@
 from django.urls import path
 from .api import *
 
+# urls malamang
 
 urlpatterns = [
     path('', postList, name='postList'),

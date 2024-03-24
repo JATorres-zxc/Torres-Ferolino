@@ -7,9 +7,9 @@ import SearchView from '../views/SearchView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import PostView from '../views/PostView.vue'
 import EditProfileView from '../views/EditProfileView.vue'
-import editProfileView from '../views/EditPasswrodView.vue'
 import EditPasswrodView from '../views/EditPasswrodView.vue'
 
+// list of router for all views
 
 
 const router = createRouter({

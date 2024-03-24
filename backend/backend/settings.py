@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'search',
 ]
 
+# for permission and auth, basically for usermodel app
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -59,20 +60,24 @@ REST_FRAMEWORK = {
     ],
 }
 
+# for permission and auth, basically for usermodel app
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+# for permission and auth, basically for usermodel app
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+# since User sa models.py ng usermodel ang like 'user' 
 AUTH_USER_MODEL = 'usermodel.User' # from models.py
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # add corsmiddleware before default middleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -148,10 +153,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# add this for media attachment which will me automatically created later after posting one(no need to created a folder for this)
 MEDIA_URL = 'media/'
 
+# add this for media attachment which will me automatically created later after posting one(no need to created a folder for this)
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+# i added this since development stage pa alng naman
 WEBSITE_URL = 'http://127.0.0.1:8000'
 
 
@@ -161,6 +170,8 @@ WEBSITE_URL = 'http://127.0.0.1:8000'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# this is just for the tokens in auth
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),

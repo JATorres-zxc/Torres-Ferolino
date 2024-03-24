@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
+# custom add
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -23,7 +25,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('usermodel.urls')),
-    path('api/posts/', include('post.urls')),
-    path('api/search/', include('search.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/', include('usermodel.urls')), # add this to access usermodel views/api
+    path('api/posts/', include('post.urls')), # add this to access post views/api, access muna ng api then next is posts views/api na
+    path('api/search/', include('search.urls')), # add this to access search views/api, access muna ng api then next is search views/api na
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # for media/picture attactments

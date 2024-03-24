@@ -101,32 +101,42 @@ import axios from 'axios'
 import CommentItem from '../components/CommentItem.vue'
 
 export default {
+    // Component name
     name: 'PostView',
 
+    // Components used in this component
     components:{
         CommentItem,
     },
 
+    // Component data
     data() {
         return {
+            // Initialize post object with empty comments array
             post: {
                 comments:[]
             },
+            // Text content of new comment
             body: ''
         }
     },
 
+    // Lifecycle hook: Called when component is mounted
     mounted() {
+        // Fetch post when component is mounted
         this.getPost()
     },
 
+    // Component methods
     methods: {
+        // Method to fetch post from the server
         getPost() {
             axios
                 .get(`/api/posts/${this.$route.params.id}/`)
                 .then(response => {
                     console.log('data', response.data)
 
+                    // Update post object with fetched data
                     this.post = response.data.post
                 })
                 .catch(error => {
@@ -134,9 +144,11 @@ export default {
                 })
         },
 
+        // Method to submit new comment
         submitForm() {
             console.log('submitForm:', this.body);
 
+            // Send request to create new comment
             axios
                 .post(`/api/posts/${this.$route.params.id}/comment/`, {
                     'body':this.body
@@ -144,6 +156,7 @@ export default {
                 .then(response => {
                     console.log('data',response.data)
 
+                    // Add new comment to post's comments array
                     this.post.comments.push(response.data)
                     this.post.comments_count += 1
                     this.body = ''
@@ -153,9 +166,11 @@ export default {
                 })
         },
 
+        // Method to like a post
         likePost(id){
             console.log('likepost',id)
             
+            // Send request to like the post
             axios
                 .post(`/api/posts/${id}/like/`)
                 .then(response =>{

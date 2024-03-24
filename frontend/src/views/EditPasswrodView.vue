@@ -29,6 +29,7 @@
                         <input type="password" v-model="form.new_password2" placeholder="Repeat password" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
                     </div>
 
+                    <!-- Display errors if any -->
                     <template v-if="errors.length > 0">
                         <div class="bg-red-300 text-white rounded-lg p-6">
                             <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
@@ -52,6 +53,7 @@ import { useUserStore } from '@/stores/user'
 
 export default {
     setup() {
+        // Access toast store and user store
         const toastStore = useToastStore()
         const userStore = useUserStore()
 
@@ -61,6 +63,7 @@ export default {
         }
     },
 
+    // Data for component
     data() {
         return {
             form: {
@@ -72,20 +75,27 @@ export default {
         }
     },
 
+    // Methods for component
     methods: {
+        // Method to handle form submission
         submitForm() {
+            // Clear previous errors
             this.errors = []
 
-            if (this.form.password1 !== this.form.password2) {
-                this.errors.push('The password does not match')
+            // Check if new passwords match
+            if (this.form.new_password1 !== this.form.new_password2) {
+                this.errors.push('The passwords do not match')
             }
 
+            // If no errors, proceed with form submission
             if (this.errors.length === 0) {
+                // Create form data
                 let formData = new FormData()
                 formData.append('old_password', this.form.old_password)
                 formData.append('new_password1', this.form.new_password1)
                 formData.append('new_password2', this.form.new_password2)
 
+                // Submit form data
                 axios
                     .post('/api/editpassword/', formData, {
                         headers: {
@@ -93,11 +103,15 @@ export default {
                         }
                     })
                     .then(response => {
+                        // If password change is successful
                         if (response.data.message === 'success') {
+                            // Show success toast message
                             this.toastStore.showToast(5000, 'The information was saved', 'bg-emerald-500')
 
+                            // Redirect to user profile page
                             this.$router.push(`/profile/${this.userStore.user.id}`)
                         } else {
+                            // If there are errors, display them
                             const data = JSON.parse(response.data.message)
 
                             for (const key in data){
@@ -106,6 +120,7 @@ export default {
                         }
                     })
                     .catch(error => {
+                        // Log error if request fails
                         console.log('error', error)
                     })
             }

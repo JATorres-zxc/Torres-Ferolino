@@ -5,6 +5,8 @@
 
                 <div class="main-center col-span-4 space-y-4">
                     <div class="bg-white border border-gray-200 rounded-lg">
+
+
                         <form action="" method="post" v-on:submit.prevent="submitForm">
 
                             <div class="p-4">  
@@ -12,15 +14,22 @@
                             </div>
 
                             <div class="p-4 border-t border-gray-100 flex justify-between">
+
+                                <!-- for attach image shit js below -->
                                 <label class="inline-block py-4 px-6 bg-gray-600 text-white rounded-lg">
                                     <input type="file" ref="file" @change="handleFileChange">
+                                    <!-- fileName sa js below -->
                                     <span v-if="fileName" class="text-sm text-gray-300">{{ fileName }}</span>
                                     <span v-else>Attach image</span>
                                 </label>
+
                                 <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg">Post</button>
                             </div>
 
                         </form>
+
+
+
                     </div>
 
                     <div 
@@ -70,12 +79,7 @@
                                     <RouterLink :to="{name: 'postview', params: {id: post.id}}" class="text-gray-500 text-xs">{{ post.comments_count }} comments</RouterLink>
                                 </div>
                             </div>
-                            
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                </svg>   
-                            </div>   
+
                         </div>  
                     </div>
                 </div>
@@ -103,27 +107,34 @@
 import axios from 'axios'
 
 export default {
+    // Component name
     name: 'FeedView',
 
+    // Component data
     data() {
         return {
-            posts: [],
-            body: '',
-            fileName: null,
+            posts: [], // Array to store posts
+            body: '', // Text content of new post
+            fileName: null, // Name of selected file
         }
     },
 
+    // Lifecycle hook: Called when component is mounted
     mounted() {
+        // Fetch feed when component is mounted
         this.getFeed()
     },
 
+    // Component methods
     methods: {
+        // Method to fetch feed from the server
         getFeed() {
             axios
                 .get('/api/posts/')
                 .then(response => {
                     console.log('data', response.data)
 
+                    // Update posts array with fetched data
                     this.posts = response.data
                 })
                 .catch(error => {
@@ -131,22 +142,27 @@ export default {
                 })
         },
 
+        // Method to handle file input change
         handleFileChange(event) {
             const file = event.target.files[0];
             if (file) {
+                // Update fileName with selected file name
                 this.fileName = file.name;
             } else {
                 this.fileName = null;
             }
         },
 
+        // Method to submit new post
         submitForm() {
             console.log('submitForm:', this.body);
 
+            // Create form data
             let formData = new FormData()
             formData.append('image', this.$refs.file.files[0])
             formData.append('body', this.body)
 
+            // Submit form data to create new post
             axios
                 .post('/api/posts/create/', formData, {
                     headers: {
@@ -156,6 +172,7 @@ export default {
                 .then(response => {
                     console.log('data',response.data)
 
+                    // Add new post to the beginning of posts array
                     this.posts.unshift(response.data)
                     this.body = ''
                     // this.user.posts_count +=1
@@ -165,13 +182,17 @@ export default {
                 })
         },
 
+        // Method to delete a post
         deletePost(id) {
+            // Filter out the post with the given id
             this.posts = this.posts.filter(post => post.id !== id)
         },
 
+        // Method to like a post
         likePost(id){
             console.log('likepost',id)
             
+            // Send request to like the post
             axios
                 .post(`/api/posts/${id}/like/`)
                 .then(response =>{

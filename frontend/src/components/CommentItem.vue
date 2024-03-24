@@ -4,6 +4,7 @@
             <img :src="comment.created_by.get_avatar" class="w-[40px] rounded-full">
             
             <p>
+                <!-- comment is from api.py from post, then yung created_by id and name is from models -->
                 <strong>
                     <RouterLink :to="{name: 'profile', params:{'id': comment.created_by.id}}">{{ comment.created_by.name }}</RouterLink>
                 </strong>

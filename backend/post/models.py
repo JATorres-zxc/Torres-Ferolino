@@ -4,21 +4,9 @@ from usermodel.models import User
 from django.conf import settings
 from django.utils.timesince import timesince
 
-
+# db replica
 
 # Create your models here.
-class PostAttachment(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    image = models.ImageField(upload_to='post_attachments')
-    created_by = models.ForeignKey(User, related_name='post_attachments', on_delete=models.CASCADE)
-
-    # def get_image(self):
-    #     if self.image:
-    #         return settings.WEBSITE_URL + self.image.url
-    #     else:
-    #         return ''
-
-
 class Like(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_by = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)

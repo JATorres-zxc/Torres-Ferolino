@@ -81,12 +81,34 @@
                                     <router-link :to="{name: 'postview', params: {id: post.id}}" class="text-gray-500 text-xs">{{ post.comments_count }} comments</router-link>
                                 </div>
                             </div>
+
+
                             <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
-                                </svg>
+                                <div @click="toggleExtraModal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
+
+
+                        <div v-if="showExtraModal">
+                            <div class="flex items-center space-x-6 justify-end">
+                                <div 
+                                class="flex items-center space-x-2" 
+                                @click="deletePost(post.id)"
+                                v-if="userStore.user.id == post.created_by.id"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </div>
+                                    <span class="text-red-500 text-xs">Delete post</span>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -111,51 +133,67 @@
 <script>
 import axios from 'axios'
 import { useUserStore } from '@/stores/user'
-
+import { mapState } from 'pinia'
+import { useCounterStore } from '../stores/counter'
 
 export default {
+    // Component name
     name: 'FeedView',
 
+    // Computed properties
+    computed: {
+        ...mapState(useCounterStore, ['posts_count']), // Map posts_count from useCounterStore
+        ...mapState(useCounterStore, {
+            myOwnName: 'posts_count', // Define an alias for posts_count
+        }),
+    },
+
+    // Setup function to initialize user store
     setup() {
-            const userStore = useUserStore()
+        const userStore = useUserStore()
 
-            return {
-                userStore
-            }
-        },
-
-    data() {
         return {
-            posts: [],
-            body: '',
-            user:{},
-            fileName: null,
+            userStore
         }
     },
 
+    // Component data
+    data() {
+        return {
+            posts: [], // Array to store posts
+            body: '', // Text content of new post
+            user: {}, // Object to store user data
+            fileName: null, // Name of selected file
+            showExtraModal: false, // Flag to control visibility of extra modal
+        }
+    },
+
+    // Lifecycle hook: Called when component is mounted
     mounted() {
-        this.getFeed()
+        this.getFeed() // Fetch feed when component is mounted
     },
     
-    // for switching between two profiles
-    watch: { 
+    // Watcher for changes in route parameters
+    watch: {
         '$route.params.id': {
             handler: function() {
-                this.getFeed()
-                // console.log('switchprofile')
+                this.getFeed() // Fetch feed when route parameter changes
             },
             deep: true,
             immediate: true
         }
     },
 
+    // Component methods
     methods: {
+        // Method to fetch feed from the server
         getFeed() {
             axios
                 .get(`/api/posts/profile/${this.$route.params.id}/`)
                 .then(response => {
                     console.log('data', response.data)
 
+                    // Update posts and user data with fetched data
                     this.posts = response.data.posts
                     this.user = response.data.user
                 })
@@ -163,6 +201,8 @@ export default {
                     console.log('error', error)
                 })
         },
+
+        // Method to handle file input change
         handleFileChange(event) {
             const file = event.target.files[0];
             if (file) {
@@ -172,13 +212,16 @@ export default {
             }
         },
 
+        // Method to submit new post
         submitForm() {
             console.log('submitForm:', this.body);
 
+            // Create form data
             let formData = new FormData()
             formData.append('image', this.$refs.file.files[0])
             formData.append('body', this.body)
 
+            // Submit form data to create new post
             axios
                 .post('/api/posts/create/', formData, {
                     headers: {
@@ -188,22 +231,38 @@ export default {
                 .then(response => {
                     console.log('data',response.data)
 
+                    // Add new post to the beginning of posts array
                     this.posts.unshift(response.data)
                     this.body = ''
-                    this.user.posts_count +=1
+                    this.posts_count +=1
+                    location.reload();
                 })
                 .catch(error =>{
                     console.log('error',error)
                 })
         },
 
+        // Method to delete a post
         deletePost(id) {
-            this.posts = this.posts.filter(post => post.id !== id)
+            console.log('deletepost', id)
+
+            // Send request to delete the post
+            axios
+                .delete(`/api/posts/${id}/delete/`)
+                .then(response => {
+                    console.log(response.data)
+                    location.reload();
+                })
+                .catch(error => {
+                    console.log("error", error);
+                })
         },
 
+        // Method to like a post
         likePost(id){
             console.log('likepost',id)
             
+            // Send request to like the post
             axios
                 .post(`/api/posts/${id}/like/`)
                 .then(response =>{
@@ -216,12 +275,21 @@ export default {
                 });
         },
 
+        // Method to logout user
         logout(){
             console.log('logout')
 
+            // Remove user token and redirect to login page
             this.userStore.removeToken()
-
             this.$router.push('/login')
+        },
+
+        // Method to toggle visibility of extra modal
+        toggleExtraModal(){
+            console.log('extramodal')
+
+            // Toggle value of showExtraModal flag
+            this.showExtraModal = !this.showExtraModal
         }
     }
 }

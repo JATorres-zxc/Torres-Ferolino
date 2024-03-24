@@ -54,6 +54,7 @@ import { useUserStore } from '@/stores/user'
 
 export default {
     setup() {
+        // Access toast store and user store
         const toastStore = useToastStore()
         const userStore = useUserStore()
 
@@ -63,8 +64,10 @@ export default {
         }
     },
 
+    // Data for component
     data() {
         return {
+            // Initialize form with user data
             form: {
                 email: this.userStore.user.email,
                 name: this.userStore.user.name
@@ -73,24 +76,32 @@ export default {
         }
     },
 
+    // Methods for component
     methods: {
+        // Method to handle form submission
         submitForm() {
+            // Clear previous errors
             this.errors = []
 
+            // Check if email is missing
             if (this.form.email === '') {
                 this.errors.push('Your e-mail is missing')
             }
 
+            // Check if name is missing
             if (this.form.name === '') {
                 this.errors.push('Your name is missing')
             }
 
+            // If no errors, proceed with form submission
             if (this.errors.length === 0) {
+                // Create form data
                 let formData = new FormData()
                 formData.append('avatar', this.$refs.file.files[0])
                 formData.append('name', this.form.name)
                 formData.append('email', this.form.email)
 
+                // Submit form data
                 axios
                     .post('/api/editprofile/', formData, {
                         headers: {
@@ -98,9 +109,12 @@ export default {
                         }
                     })
                     .then(response => {
+                        // If information update is successful
                         if (response.data.message === 'information updated') {
+                            // Show success toast message
                             this.toastStore.showToast(5000, 'The information was saved', 'bg-emerald-500')
 
+                            // Update user information in user store
                             this.userStore.setUserInfo({
                                 id: this.userStore.user.id,
                                 name: this.form.name,
@@ -108,12 +122,15 @@ export default {
                                 avatar: response.data.user.get_avatar
                             })
 
+                            // Navigate back to previous page
                             this.$router.back()
                         } else {
+                            // If there are errors, show error toast message
                             this.toastStore.showToast(5000, `${response.data.message}. Please try again`, 'bg-red-300')
                         }
                     })
                     .catch(error => {
+                        // Log error if request fails
                         console.log('error', error)
                     })
             }
