@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SignupView from '../views/SignupView.vue'
 import LoginView from '../views/LoginView.vue'
 import FeedView from '../views/FeedView.vue'
-import MessagesView from '../views/MessagesView.vue'
 import SearchView from '../views/SearchView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import PostView from '../views/PostView.vue'
@@ -29,11 +28,6 @@ const router = createRouter({
       path: '/feed',
       name: 'feed',
       component: FeedView
-    },
-    {
-      path: '/messages',
-      name: 'messages',
-      component: MessagesView
     },
     {
       path: '/search',

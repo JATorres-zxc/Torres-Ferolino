@@ -3,7 +3,7 @@
         <main class="px-8 py-6 bg-gray-100">
             <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
                 <div class="main-center col-span-4 space-y-4">
-                    <!-- searchbar -->
+                    <!-- searchbar start-->
                     <div class="bg-white border border-gray-200 rounded-lg">
                         <form v-on:submit.prevent="submitForm" class="p-4 flex space-x-4">  
                             <input v-model="query" type="search" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What are you looking for?">
@@ -14,12 +14,10 @@
                                 </svg>      
                             </button>
                         </form>
-                    
                     </div>
+                    <!-- searchbar end-->
 
-
-
-
+                    <!-- if may na search na user start-->
                     <div class="p-4 bg-white border border-gray-200 rounded-lg grid grid-cols-4 gap-4"
                     v-if="users.length"
                     >
@@ -35,9 +33,10 @@
                                 <p class="text-xs text-gray-500">{{user.posts_count}} posts</p>
                             </div>
                         </div>
-
                     </div>
+                    <!-- if may na search na user end -->
 
+                    <!-- if may na search na post start-->
                     <div 
                     class="p-4 bg-white border border-gray-200 rounded-lg"
                     v-for="post in posts"
@@ -55,14 +54,12 @@
                             <p class="text-gray-600">{{ post.created_at_formatted}}</p>
                         </div>
 
+                        
                         <template v-if="post.attachments.length">
                             <img v-for="image in post.attachments" v-bind:key="image.id" :src="image.get_image" class="w-full mb-4 rounded-xl">
                         </template>
+                        <p>{{ post.body }}</p>
                         
-                        <p>
-                            {{ post.body }}
-                        </p>
-
                         <div class="my-6 flex justify-between">
                             <div class="flex space-x-6">
                                 <div class="flex items-center space-x-2" @click="likePost(post.id)">
@@ -87,6 +84,7 @@
                             
                         </div>  
                     </div>
+                    <!-- if may na search na post start-->
                 </div>
 
             </div>

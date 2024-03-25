@@ -3,12 +3,6 @@
         <div class="main-left">
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
                 <h1 class="mb-6 text-2xl">Edit profile</h1>
-
-                <p class="mb-6 text-gray-500">
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
-                </p>
-
                 <RouterLink to="/profile/edit/password" class="underline">Edit password</RouterLink>
             </div>
         </div>
@@ -28,7 +22,7 @@
 
                     <div>
                         <label>Avatar</label><br>
-                        <input type="file" ref="file">
+                        <input type="file" ref="file"> 
                     </div>
 
                     <template v-if="errors.length > 0">
@@ -70,7 +64,8 @@ export default {
             // Initialize form with user data
             form: {
                 email: this.userStore.user.email,
-                name: this.userStore.user.name
+                name: this.userStore.user.name,
+                avatar:null
             },
             errors: [],
         }
