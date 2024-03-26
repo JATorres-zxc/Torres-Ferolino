@@ -4,10 +4,6 @@
             <div class="p-12 bg-white border border-gray-200 rounded-lg">
                 <h1 class="mb-6 text-2xl">Log in</h1>
 
-                <p class="mb-6 text-gray-500">
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
-                    Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate. Lorem ipsum dolor sit mate.
-                </p>
 
                 <p class="font-bold">
                     Don't have an account? <RouterLink :to="{'name': 'signup'}" class="underline">Click here</RouterLink> to create one!

@@ -20,10 +20,13 @@
                         <input type="email" v-model="form.email" placeholder="Your e-mail address" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
                     </div>
 
-                    <div>
-                        <label>Avatar</label><br>
-                        <input type="file" ref="file"> 
-                    </div>
+                    <!-- for attach image shit js below -->
+                    <label class="inline-block py-4 px-6 bg-gray-600 text-white rounded-lg">
+                        <input type="file" ref="file" @change="handleFileChange">
+                        <!-- fileName sa js below -->
+                        <span v-if="fileName" class="text-sm text-gray-300">{{ fileName }}</span>
+                        <span v-else>Change Avatar</span>
+                    </label>
 
                     <template v-if="errors.length > 0">
                         <div class="bg-red-300 text-white rounded-lg p-6">
@@ -39,6 +42,20 @@
         </div>
     </div>
 </template>
+
+<!-- style for attach image button -->
+<style>
+    input[type='file']{
+        display: none;
+    }
+
+    .custom-file-upload{
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+</style>
 
 <script>
 import axios from 'axios'
@@ -129,7 +146,16 @@ export default {
                         console.log('error', error)
                     })
             }
-        }
+        },
+        handleFileChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Update fileName with selected file name
+                this.fileName = file.name;
+            } else {
+                this.fileName = null;
+            }
+        },
     }
 }
 </script>
