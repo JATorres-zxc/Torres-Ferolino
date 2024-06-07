@@ -22,9 +22,9 @@ def signup(request):
     
     if form.is_valid():
         form.save()
-        return JsonResponse({'status': 'success'})
+        return JsonResponse({'message': 'success'})
     else:
-        return JsonResponse({'status': 'error'})
+        return JsonResponse({'message': 'error'})
 
 
 # magagamit sa profileview.vue and hindi lang ata don, brb to check

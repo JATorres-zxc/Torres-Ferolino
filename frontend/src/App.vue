@@ -1,10 +1,10 @@
 <template>
-    <nav class="py-10 px-8 border-b border-gray-200 dark:bg-purple-500">
+    <nav class="py-5 px-8 border-b border-gray-200">
         <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between">
-                <div class="menu-left">
-                    <a href="/feed" class="text-xl">Blogprj</a>
-                </div>
+                <a class="menu-left" href="/feed">
+                    <img src="../src/assets/logonobg.jpg" alt="Blogprj Logo" class="w-auto h-20">
+                </a>
                 <!-- home and search -->
                 <div class="menu-center flex space-x-12">
                     <!-- home -->
@@ -39,7 +39,7 @@
     </nav>
 
     <!-- body from router sa index.js -->
-    <main class="px-8 py-6 bg-gray-100">
+    <main class="bg-gray-100">
         <RouterView />
     </main>
 

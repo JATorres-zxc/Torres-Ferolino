@@ -168,7 +168,10 @@ WEBSITE_URL = 'http://127.0.0.1:8000'
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'))
+# Define STATICFILES_DIRS as a tuple with a trailing comma
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),  # Note the trailing comma
+)
 django_heroku.settings(locals())
 
 

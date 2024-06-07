@@ -1,19 +1,17 @@
 
 <template>
-    <div class="max-w-7xl mx-auto grid grid-cols-2 gap-4">
-        <div class="main-left">
-            <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                <h1 class="mb-6 text-2xl">Edit password</h1>
+    <div class="flex justify-center p-5 md:p-20 h-full bg-[#BADFE7]">
 
-                <p class="mb-6 text-gray-500">
+            <div class="shadow-md w-full md:w-1/2 lg:w-1/3 bg-[#C2EDCE] content-center text-center font-OpenSans">
+                <h1 class="text-lg md:text-xl lg:text-2xl font-bold leading-10">Edit password</h1>
+
+                <p class="text-[#979797] text-center text-xs md:text-sm lg:text-base">
                     Change your password here
                 </p>
             </div>
-        </div>
 
-        <div class="main-right">
-            <div class="p-12 bg-white border border-gray-200 rounded-lg">
-                <form class="space-y-6" v-on:submit.prevent="submitForm">
+            <div class="shadow-md w-full md:w-1/2 lg:w-1/3 p-5 md:p-14 bg-white font-OpenSans">
+                <form class="space-y-6 text-xs" v-on:submit.prevent="submitForm">
                     <div>
                         <label>Old password</label><br>
                         <input type="password" v-model="form.old_password" placeholder="Your old password" class="w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg">
@@ -36,12 +34,11 @@
                         </div>
                     </template>
 
-                    <div>
-                        <button class="py-4 px-6 bg-purple-600 text-white rounded-lg">Save changes</button>
+                    <div class="flex justify-center ">
+                        <button class="py-3 px-5 rounded-full bg-[#BADFE7] hover:bg-sky-800 hover:text-white active:ring active:ring-sky-600 text-xs md:text-sm lg:text-base">Save changes</button>
                     </div>
                 </form>
             </div>
-        </div>
     </div>
 </template>
 

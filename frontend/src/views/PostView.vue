@@ -1,10 +1,10 @@
 <template>
     <body> 
-    <main class="px-8 py-6 bg-gray-100">
+    <main class="px-8 py-6 bg-[#badfe7]">
         <div class="max-w-7xl mx-auto grid grid-cols-4 gap-4">
             <div class="main-center col-span-4 space-y-4">
                 <!-- post section start -->
-                <div class="p-4 bg-white border border-gray-200 rounded-lg" v-if="post.id">
+                <div class="p-4 bg-[#f6f6f2] border border-gray-200 rounded-lg shadow-md" v-if="post.id">
 
                     <!-- name and time start -->
                     <div class="mb-6 flex items-center justify-between">
@@ -52,26 +52,26 @@
 
 
                 <!-- comment section start -->
-                <div class="p-4 ml-6 border border-gray-300 rounded-lg">
+                <div class="p-4 ml-6 border border-[#50909e] rounded-lg shadow-md">
                     <div class="text-lg font-semibold mb-4">
                         Comments
                     </div>
                     <!-- for loop ng comments -->
-                    <div class="comment-item p-4 bg-gray-50 border border-gray-200 rounded-lg mb-4" v-for="comment in post.comments" :key="comment.id">
+                    <div class="comment-item p-4 bg-[#a9d2db] border-gray-200 rounded-lg mb-4" v-for="comment in post.comments" :key="comment.id">
                         <CommentItem :comment="comment" />
                     </div>
                 </div>
                 <!-- comment section end-->
 
                 <!-- comment form start -->
-                <div class="bg-white border border-gray-200 rounded-lg">
+                <div class="bg-[#f6f6f2] border border-gray-200 rounded-lg shadow-md">
                     <form action="" method="post" v-on:submit.prevent="submitForm">
                         <div class="p-4">  
-                            <textarea v-model="body" class="p-4 w-full bg-gray-100 rounded-lg" placeholder="What do you think?"></textarea>
+                            <textarea v-model="body" class="p-4 w-full bg-white rounded-lg" placeholder="What do you think?"></textarea>
                         </div>
 
                         <div class="p-4 border-t border-gray-100 flex justify-between">
-                            <button class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg ml-auto">Comment</button>
+                            <button class="inline-block py-3 px-6 bg-[#c2edce] text-black rounded-lg ml-auto">Comment</button>
                         </div>
                     </form>
                 </div>
